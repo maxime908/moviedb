@@ -1,0 +1,7 @@
+RewriteEngine on
+RewriteRule ^movies/([0-9]+)/?$ movies/index.php?id=$1 [L,QSA]
+RewriteRule ^categories/([0-9]+)/?$ categories/index.php?id=$1 [L,QSA]
+RewriteRule ^movies/([0-9]+)/?/like$ movies/index.php?id=$1&like [L,QSA]
+RewriteRule ^movies/([0-9]+)/?/removelike$ movies/index.php?id=$1&removelike [L,QSA]
+RewriteRule ^movies/([0-9]+)/?/dislike$ movies/index.php?id=$1&dislike [L,QSA]
+RewriteRule ^movies/([0-9]+)/?/removedislike$ movies/index.php?id=$1&removedislike [L,QSA]
