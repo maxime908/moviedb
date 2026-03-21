@@ -2,6 +2,49 @@
     require_once(__DIR__ . "/../config/config.php");
     require_once(__DIR__ . "/../config/variables.php");
 
+    header('Accept: application/json');
+    header('Content-Type: application/json');
+    header('Access-Control-Allow-Origin: *');
+    header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS,  PATCH");
+    header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+
+    if ($_SERVER['REQUEST_METHOD'] === "POST") {
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        $addCategorieStatement = $mysqlClient -> prepare("INSERT INTO categories (name) VALUES (:name)");
+        $addCategorieStatement -> execute([
+            "name" => $data["name"],
+        ]);
+
+        exit;
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] === "DELETE" && isset($_GET['id'])) {
+        $deleteMoviesCatsStatement = $mysqlClient -> prepare("DELETE FROM movies_categories WHERE id_category = :id_category");
+        $deleteMoviesCatsStatement -> execute([
+            'id_category' => $_GET['id'],
+        ]);
+
+        $deleteCatStatement = $mysqlClient -> prepare("DELETE FROM categories WHERE id_categorie = :id_categorie");
+        $deleteCatStatement -> execute([
+            'id_categorie' => $_GET['id'],
+        ]);
+
+        exit;
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] === "PUT" && isset($_GET['id'])) {
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        $updateCatStatement = $mysqlClient -> prepare("UPDATE categories SET name = :name WHERE id_categorie = :id_categorie");
+        $updateCatStatement -> execute([
+            "id_categorie" => $_GET['id'],
+            "name" => $data['name'],
+        ]);
+
+        exit;
+    }
+
     $tab = [
         "data" => $categories,
     ];
@@ -57,8 +100,4 @@
     } else {
         echo json_encode($tab);
     }
-
-    header('Accept: application/json');
-    header('Content-Type: application/json');
-    header('Access-Control-Allow-Origin: *');
 ?>
