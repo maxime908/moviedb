@@ -124,22 +124,24 @@
     if (isset($_GET['id'])) {
         foreach ($tab['data'] as $key => $value) {
             if ($_GET["id"] == $value['id_movie']) {
-                if (isset($_GET['like'])) {
-                    $addLikeStatement -> execute([
-                        'id_movie' => $value['id_movie'],
-                    ]);
-                } else if (isset($_GET['dislike'])) {
-                    $addDislikeStatement -> execute([
-                        'id_movie' => $value['id_movie'],
-                    ]);
-                } else if (isset($_GET['removelike'])) {
-                    $removeLikeStatement -> execute([
-                        'id_movie' => $value['id_movie'],
-                    ]);
-                } else if (isset($_GET['removedislike'])) {
-                    $removeDislikeStatement -> execute([
-                        'id_movie' => $value['id_movie'],
-                    ]);
+                if ($_SERVER['REQUEST_METHOD'] === "PATCH") {
+                    if (isset($_GET['like'])) {
+                        $addLikeStatement -> execute([
+                            'id_movie' => $value['id_movie'],
+                        ]);
+                    } else if (isset($_GET['dislike'])) {
+                        $addDislikeStatement -> execute([
+                            'id_movie' => $value['id_movie'],
+                        ]);
+                    } else if (isset($_GET['removelike'])) {
+                        $removeLikeStatement -> execute([
+                            'id_movie' => $value['id_movie'],
+                        ]);
+                    } else if (isset($_GET['removedislike'])) {
+                        $removeDislikeStatement -> execute([
+                            'id_movie' => $value['id_movie'],
+                        ]);
+                    }
                 }
 
                 if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
