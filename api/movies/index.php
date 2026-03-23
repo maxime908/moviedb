@@ -10,13 +10,6 @@
     header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS,  PATCH");
     header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
 
-    if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-        http_response_code(200);
-        exit();
-    }
-
-    $i = 0;
-
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $data = json_decode(file_get_contents('php://input'), true);
 
@@ -42,6 +35,7 @@
                 'id_category' => $value,
             ]);
         }
+
         exit;
     }
 
@@ -83,7 +77,6 @@
     ];
 
     $temp = [];
-    $test = [];
 
     $bool = true;
 
@@ -95,11 +88,11 @@
 
     $movieCategoryStatement = $mysqlClient -> prepare(
     "SELECT *,
-     (
-     SELECT name
-     FROM categories
-     WHERE id_categorie = movies_categories.id_category
-     ) AS name_cat
+        (
+        SELECT name
+        FROM categories
+        WHERE id_categorie = movies_categories.id_category
+        ) AS name_cat
     FROM movies_categories 
     WHERE id_movie = :id");
 
